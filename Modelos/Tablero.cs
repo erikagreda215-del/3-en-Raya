@@ -38,7 +38,14 @@ namespace TresEnRaya
             Console.WriteLine();
             for (int fila = 0; fila < Tamano; fila++)
             {
-                Console.WriteLine($" {ObtenerSimbolo(fila, 0)} | {ObtenerSimbolo(fila, 1)} | {ObtenerSimbolo(fila, 2)} ");
+                for (int columna = 0; columna < Tamano; columna++)
+                {
+                    Console.Write(" ");
+                    EscribirCasilla(fila, columna);
+                    Console.Write(columna < Tamano - 1 ? " |" : " ");
+                }
+                Console.WriteLine();
+
                 if (fila < Tamano - 1)
                     Console.WriteLine("---+---+---");
             }
@@ -94,11 +101,24 @@ namespace TresEnRaya
 
         private static bool EstaEnRango(int indice) => indice >= 0 && indice < Tamano;
 
-        /// <summary>Símbolo de la casilla, o su número de posición (1-9) si está libre.</summary>
-        private char ObtenerSimbolo(int fila, int columna)
+        /// <summary>
+        /// Escribe una casilla: 'X' en azul, 'O' en rojo y, si está libre,
+        /// su número de posición (1-9) con el color por defecto.
+        /// </summary>
+        private void EscribirCasilla(int fila, int columna)
         {
             char valor = matriz[fila, columna];
-            return valor == CasillaVacia ? (char)('1' + fila * Tamano + columna) : valor;
+
+            if (valor == CasillaVacia)
+            {
+                Console.Write((char)('1' + fila * Tamano + columna));
+                return;
+            }
+
+            ConsoleColor colorOriginal = Console.ForegroundColor;
+            Console.ForegroundColor = valor == 'X' ? ConsoleColor.Blue : ConsoleColor.Red;
+            Console.Write(valor);
+            Console.ForegroundColor = colorOriginal;
         }
     }
 }
